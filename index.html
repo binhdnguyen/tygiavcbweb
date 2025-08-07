@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💱 Vietcombank Currency Exchange</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>💱 Vietcombank Currency Exchange</h1>
+        <div class="last-updated">
+            <span id="lastUpdated">Loading exchange rates...</span>
+            <button type="button" id="refreshBtn" class="refresh-btn" onclick="manualRefresh()">🔄 Refresh Rates</button>
+        </div>
+        
+        <div class="currency-calculator">
+            <div id="currencyLines" class="currency-lines">
+                <!-- Currency lines will be dynamically generated -->
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Fetching exchange rates...</p>
+        </div>
+        
+        <div class="error hidden" id="error">
+            <p>⚠️ Unable to fetch exchange rates. Please try again later.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
