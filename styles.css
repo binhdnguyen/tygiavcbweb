@@ -21,15 +21,13 @@
     min-height: 100vh;
     padding: 20px;
     overscroll-behavior: none; /* Prevents pull-to-refresh on mobile */
-}
-
-.container {
+}.container {
     max-width: 900px;
     margin: 0 auto;
     background-color: white;
-    border-radius: 20px;
+    border-radius: 12px;
     box-shadow: var(--shadow);
-    padding: 30px;
+    padding: 20px;
     backdrop-filter: blur(10px);
 }
 
@@ -81,38 +79,32 @@ h1 {
 
 .currency-calculator {
     position: relative;
-}
-
-.currency-lines {
+}.currency-lines {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-}
-
-.currency-line {
+    gap: 4px;
+}.currency-line {
     background-color: var(--input-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 16px;
-    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     position: relative;
+    margin-bottom: 4px;
 }
 
 .currency-line:hover {
     border-color: var(--secondary-color);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
-}
-
-.currency-line.input-line {
+    background-color: var(--hover-color);
+}.currency-line.input-line {
     background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
     color: white;
     border-color: var(--primary-color);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 3px 10px rgba(59, 130, 246, 0.2);
 }
 
 .currency-line.input-line .currency-input {
@@ -199,21 +191,21 @@ h1 {
     display: none;
 }@media (max-width: 768px) {
     .container {
-        padding: 15px;
-        margin: 5px;
-        border-radius: 12px;
+        padding: 12px;
+        margin: 0;
+        border-radius: 8px;
     }
     
     h1 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         margin-bottom: 5px;
     }
     
     .last-updated {
         flex-direction: column;
-        gap: 8px;
-        margin-bottom: 15px;
-        font-size: 0.75rem;
+        gap: 6px;
+        margin-bottom: 10px;
+        font-size: 0.7rem;
     }
     
     .refresh-btn {
@@ -221,69 +213,90 @@ h1 {
         padding: 6px 12px;
         width: 100%;
         max-width: 200px;
+        border-radius: 6px;
     }
     
     .currency-line {
-        padding: 12px;
+        padding: 8px 12px;
         gap: 8px;
+        margin-bottom: 2px;
+        border-radius: 6px;
     }
     
     .currency-input {
-        font-size: 1.1rem;
-        padding: 8px 10px;
-    }
-    
-    .currency-flag {
-        width: 36px;
-        height: 27px;
-    }
-
-    .currency-symbol {
-        min-width: 40px;
-        font-size: 0.9rem;
-    }
-
-    body {
-        padding: 10px 5px;
-    }
-
-    .loading {
-        padding: 20px;
-    }
-
-    .spinner {
-        width: 30px;
-        height: 30px;
-    }
-}
-
-/* Extra small devices */
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.4rem;
-    }
-    
-    .container {
-        padding: 12px;
-        margin: 0;
-    }
-    
-    .currency-line {
-        padding: 10px;
+        font-size: 1rem;
+        padding: 6px 8px;
+        border-radius: 4px;
     }
     
     .currency-flag {
         width: 32px;
         height: 24px;
     }
-    
+
     .currency-symbol {
         min-width: 36px;
         font-size: 0.85rem;
     }
+
+    body {
+        padding: 8px 4px;
+    }
+
+    .loading {
+        padding: 15px;
+    }
+
+    .spinner {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .currency-lines {
+        gap: 2px;
+    }
+}/* Extra small devices */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.3rem;
+    }
+    
+    .container {
+        padding: 10px 8px;
+        margin: 0;
+    }
+    
+    .currency-line {
+        padding: 8px 10px;
+        border-radius: 4px;
+        margin-bottom: 1px;
+    }
+    
+    .currency-flag {
+        width: 28px;
+        height: 21px;
+    }
+    
+    .currency-symbol {
+        min-width: 32px;
+        font-size: 0.8rem;
+    }
     
     .currency-input {
-        font-size: 1rem;
-        padding: 6px 8px;
+        font-size: 0.95rem;
+        padding: 4px 6px;
+    }
+    
+    .currency-lines {
+        gap: 1px;
+    }
+    
+    .last-updated {
+        margin-bottom: 8px;
+    }
+    
+    .refresh-btn {
+        padding: 4px 10px;
+        border-radius: 4px;
     }
 }
