@@ -259,30 +259,30 @@ async function manualRefresh() {
     
     refreshBtn.disabled = false;
     refreshBtn.innerHTML = originalText;
-}
-
-// Calculate and update all exchange rates
+}// Calculate and update all exchange rates
 function calculateExchangeRates() {
-    const inputLine = document.querySelector('.currency-line.input-line');
-    if (!inputLine) return;
+    // Use debounce for mobile performance
+    if (calculationTimeout) {
+        clearTimeout(calculationTimeout);
+    }
+    
+    calculationTimeout = setTimeout(() => {
+        const inputLine = document.querySelector('.currency-line.input-line');
+        if (!inputLine) return;
 
-    // Remove commas and any non-numeric characters except decimal point
-    const rawInputValue = inputLine.querySelector('.currency-input').value;
-    const cleanInputValue = rawInputValue.replace(/[,\s]/g, '').replace(/[^\d.-]/g, '');
-    const inputAmount = parseFloat(cleanInputValue) || 0;
-    
-    
-    
-    
-    
-    currencyLines.forEach(line => {
-        const currency = line.dataset.currency;
-        const input = line.querySelector('.currency-input');
+        // Remove commas and any non-numeric characters except decimal point
+        const rawInputValue = inputLine.querySelector('.currency-input').value;
+        const cleanInputValue = rawInputValue.replace(/[,\s]/g, '').replace(/[^\d.-]/g, '');
+        const inputAmount = parseFloat(cleanInputValue) || 0;
+        
+        currencyLines.forEach(line => {
+            const currency = line.dataset.currency;
+            const input = line.querySelector('.currency-input');
 
-        if (currency === baseCurrency || line.classList.contains('input-line')) {
-            // This is the input line, NEVER format it - keep user input as-is
-            return;
-        }
+            if (currency === baseCurrency || line.classList.contains('input-line')) {
+                // This is the input line, NEVER format it - keep user input as-is
+                return;
+            }
 
         let convertedAmount = 0;
         
@@ -314,11 +314,11 @@ function calculateExchangeRates() {
         if (convertedAmount === 0 || isNaN(convertedAmount)) {
             input.value = "0.00";
         } else if (convertedAmount >= 1) {
-            input.value = convertedAmount.toFixed(2);
-        } else {
+            input.value = convertedAmount.toFixed(2);} else {
             input.value = convertedAmount.toFixed(4);
         }
     });
+    }, 100); // 100ms debounce for better mobile performance
 }
 
 // Initialize the application
