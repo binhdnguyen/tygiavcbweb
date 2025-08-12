@@ -43,11 +43,47 @@ async function fetchExchangeRates() {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
         
-        const exrateList = xmlDoc.getElementsByTagName('ExrateList')[0];
-        if (exrateList) {
+        const exrateList = xmlDoc.getElementsByTagName('ExrateList')[0];if (exrateList) {
             const dateTime = exrateList.getAttribute('DateTime');
-            // Parse the DateTime format "M/d/yyyy h:mm:ss tt"
-            lastUpdated = new Date(dateTime);
+            // Parse the DateTime format "M/d/yyyy h:mm:ss tt" (e.g. "1/21/2023 4:25:33 PM")
+            try {
+                // First attempt standard parsing
+                lastUpdated = new Date(dateTime);
+                
+                // Check if the date is valid (not epoch or invalid)
+                if (lastUpdated.getFullYear() < 2000) {
+                    // Manual parsing as fallback
+                    const parts = dateTime.split(' ');
+                    if (parts.length >= 2) {
+                        const dateParts = parts[0].split('/');
+                        const timeParts = parts[1].split(':');
+                        const isPM = parts[2] && parts[2].toUpperCase() === 'PM';
+                        
+                        if (dateParts.length === 3 && timeParts.length >= 2) {
+                            const month = parseInt(dateParts[0]) - 1; // 0-based month
+                            const day = parseInt(dateParts[1]);
+                            const year = parseInt(dateParts[2]);
+                            let hours = parseInt(timeParts[0]);
+                            if (isPM && hours < 12) hours += 12;
+                            if (!isPM && hours === 12) hours = 0;
+                            const minutes = parseInt(timeParts[1]);
+                            const seconds = timeParts.length > 2 ? parseInt(timeParts[2]) : 0;
+                            
+                            lastUpdated = new Date(year, month, day, hours, minutes, seconds);
+                        }
+                    }
+                }
+                
+                // If still showing epoch time or invalid, use current time
+                if (lastUpdated.getFullYear() < 2000 || isNaN(lastUpdated.getTime())) {
+                    console.warn('Could not parse date properly, using current time');
+                    lastUpdated = new Date();
+                }
+            } catch (e) {
+                console.error('Error parsing date:', e);
+                lastUpdated = new Date(); // Fallback to current time
+            }
+            
             updateLastUpdatedDisplay();
         }
 
@@ -75,13 +111,28 @@ async function fetchExchangeRates() {
         loadingEl.style.display = 'none';
         errorEl.classList.remove('hidden');
     }
-}
-
-// Update last updated display
+}// Update last updated display
 function updateLastUpdatedDisplay() {
     const lastUpdatedEl = document.getElementById('lastUpdated');
     if (lastUpdated) {
-        lastUpdatedEl.textContent = `Last updated: ${lastUpdated.toLocaleString()}`;
+        // Format the date in a standard, user-friendly format
+        const options = { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true
+        };
+        
+        try {
+            // Try to format with the user's locale
+            lastUpdatedEl.textContent = `Last updated: ${lastUpdated.toLocaleString(undefined, options)}`;
+        } catch (e) {
+            // Fallback to simple format if there's an error
+            console.error('Error formatting date:', e);
+            lastUpdatedEl.textContent = `Last updated: ${lastUpdated.toLocaleString()}`;
+        }
     }
 }
 
